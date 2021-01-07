@@ -14,7 +14,7 @@ namespace Client
             var url = "http://localhost:5000/odata/ODataEntity?$select=Id,SomeOtherProperty";
             int nrOfTries = 100;
 
-            for(int i = 0; i < 100; i++)
+            for(int i = 0; i < nrOfTries; i++)
             {
                 var r = await c.GetAsync(url);
                 Console.WriteLine($"{i} {r.StatusCode}");

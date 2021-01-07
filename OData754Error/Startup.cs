@@ -7,8 +7,6 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Anemonis.AspNetCore.RequestDecompression;
-
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNet.OData.Formatter.Serialization;
@@ -131,7 +129,7 @@ namespace OData_754_Error
 
 
                     //Handle field specific edm configuration
-                    foreach (var efProperty in efType.GetProperties().Where(x => !x.IsShadowProperty))
+                    foreach (var efProperty in efType.GetProperties().Where(x => !x.IsShadowProperty()))
                     {
                         var edmPropertyConfig = odataEntityTypeConfig.AddProperty(efProperty.PropertyInfo);
                     }

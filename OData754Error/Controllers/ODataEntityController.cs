@@ -7,7 +7,6 @@ using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.Extensions.Logging;
-using System.Web.Http;
 using System.Net;
 using Microsoft.AspNet.OData.Routing;
 
@@ -27,18 +26,8 @@ namespace OData_754_Error.Controllers
         [EnableQuery(MaxNodeCount = int.MaxValue)]
         public virtual IQueryable<ODataEntity> Get(ODataQueryOptions<ODataEntity> queryOptions)
         {
-
-            try
-            {
-                IQueryable<ODataEntity> query = Ctx.Set<ODataEntity>();
-                return query;
-            }
-            catch (Exception ex)
-            {
-                throw new HttpResponseException(HttpStatusCode.InternalServerError);
-            }
-
-
+            IQueryable<ODataEntity> query = Ctx.Set<ODataEntity>();
+            return query;
         }
     }
 }
