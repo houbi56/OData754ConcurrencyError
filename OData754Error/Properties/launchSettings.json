@@ -1,0 +1,14 @@
+﻿{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "OData_754_Error": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "odata/ODataEntity",
+      "applicationUrl": "http://localhost:5000/",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
