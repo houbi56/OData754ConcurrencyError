@@ -22,6 +22,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OData;
@@ -52,9 +53,7 @@ namespace OData_754_Error
             services.AddMvc(x =>
             {
                 x.EnableEndpointRouting = false;
-
             })
-            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
             .AddApplicationPart(Assembly.GetExecutingAssembly());
 
             //services.AddEntityFrameworkInMemoryDatabase();
@@ -63,7 +62,7 @@ namespace OData_754_Error
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public virtual void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime applicationLifetime)
+        public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, IHostApplicationLifetime applicationLifetime)
         {
             var logger = loggerFactory.CreateLogger(typeof(Startup));
 
@@ -81,24 +80,20 @@ namespace OData_754_Error
                 //Enables odata query options (for all entities)
                 routeBuilder.Select().Expand().Filter().OrderBy().MaxTop(int.MaxValue).SkipToken().Count();
 
-                Func<IServiceProvider, IEdmModel> modelFact = (sp) => CreateVismaCompanyIEdmModel(app.ApplicationServices);
+                Func<IServiceProvider, IEdmModel> modelFact = (sp) => CreateIEdmModel(app.ApplicationServices);
 
                 routeBuilder.MapODataServiceRoute("myroute", "odata", a =>
                 {
-
                     a.AddService(Microsoft.OData.ServiceLifetime.Singleton, typeof(IEdmModel), modelFact)
                         .AddService<ILogger>(Microsoft.OData.ServiceLifetime.Singleton, x => logger)
-                        .AddService<ODataSerializerProvider, IgnoreDefaultEntityPropertiesSerializerProvider>(Microsoft.OData.ServiceLifetime.Singleton)
                         .AddService<IEnumerable<IODataRoutingConvention>>(Microsoft.OData.ServiceLifetime.Singleton, sp =>
                               ODataRoutingConventions.CreateDefaultWithAttributeRouting("myroute", routeBuilder));
                 });
 
-
-
             });
         }
 
-        private IEdmModel CreateVismaCompanyIEdmModel(IServiceProvider applicationServices)
+        private IEdmModel CreateIEdmModel(IServiceProvider applicationServices)
         {
             ODataConventionModelBuilder odataBuilder = new ODataConventionModelBuilder();
             using (var scope = applicationServices.CreateScope())

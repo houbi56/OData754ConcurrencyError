@@ -3,7 +3,7 @@
   "profiles": {
     "OData_754_Error": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "launchUrl": "odata/ODataEntity",
       "applicationUrl": "http://localhost:5000/",
       "environmentVariables": {

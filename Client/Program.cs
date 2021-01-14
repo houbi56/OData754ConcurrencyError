@@ -12,7 +12,7 @@ namespace Client
             var c = new HttpClient();
 
             var url = "http://localhost:5000/odata/ODataEntity?$select=Id,SomeOtherProperty";
-            int nrOfTries = 100;
+            int nrOfTries = 20;
 
             for(int i = 0; i < nrOfTries; i++)
             {
@@ -29,10 +29,13 @@ namespace Client
                 }
                 catch(Exception e)
                 {
+                    Console.WriteLine($"{i} {e.Message}");
                 }
                 
                 
             });
+
+            Console.Read();
         }
     }
 }
